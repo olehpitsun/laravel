@@ -2,35 +2,20 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use Validator;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Repositories\UserRepository;
+use App\Notifications\ConfirmEmail;
+use App\Models\User;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
     /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
+     * Create a new controller instance
      *
      * @return void
      */
@@ -40,32 +25,66 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Handle a registration request for the application
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param  \App\Http\Requests\Auth\RegisterRequest  $request
+     * @param  \App\Repositories\UserRepository $userRepository
+     * @return \Illuminate\Http\Response
      */
-    protected function validator(array $data)
+    public function register(RegisterRequest $request, UserRepository $userRepository)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
+        $user = $userRepository->store(
+            $request->all(),
+            str_random(30)
+        );
+
+        $this->notifyUser($user);
+
+        return redirect('/')->with('ok', trans('front/verify.message'));
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Handle a confirmation request
      *
-     * @param  array  $data
-     * @return User
+     * @param  \App\Repositories\UserRepository $userRepository
+     * @param  string  $confirmation_code
+     * @return \Illuminate\Http\Response
      */
-    protected function create(array $data)
+    public function confirm(UserRepository $userRepository, $confirmation_code)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        $userRepository->confirm($confirmation_code);
+
+        return redirect('/')->with('ok', trans('front/verify.success'));
+    }
+
+    /**
+     * Handle a resend request
+     *
+     * @param  \App\Repositories\UserRepository $userRepository
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function resend(UserRepository $userRepository, Request $request)
+    {
+        if ($request->session()->has('user_id')) {
+            $user = $userRepository->getById($request->session()->get('user_id'));
+
+            $this->notifyUser($user);
+            
+            return redirect('/')->with('ok', trans('front/verify.resend'));
+        }
+
+        return redirect('/');
+    }
+
+    /**
+     * Notify user with email
+     *
+     * @param  \App\Models\User  $user
+     * @return void
+     */
+    protected function notifyUser(User $user)
+    {
+        $user->notify(new ConfirmEmail($user->confirmation_code));
     }
 }
