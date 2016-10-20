@@ -59,9 +59,9 @@ class ContactController extends Controller
      */
     public function store(ContactRequest $request)
     {
-        $this->contactRepository->store($request->all());
+        //$this->contactRepository->store($request->all());
 
-        return redirect('/')->with('ok', trans('front/contact.ok'));
+        //return redirect('/')->with('ok', trans('front/contact.ok'));
     }
 
     /**

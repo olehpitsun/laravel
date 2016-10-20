@@ -17,6 +17,9 @@ Route::get('medias', 'FilemanagerController')->name('medias');
 Route::get('blog/tag', 'BlogFrontController@tag');
 Route::get('blog/search', 'BlogFrontController@search');
 Route::get('articles', 'BlogFrontController@index');
+
+Route::get('events', 'EventController@index');
+
 Route::get('blog/order', 'BlogController@indexOrder')->name('blog.order');
 Route::resource('blog', 'BlogController', ['except' => 'show']);
 Route::put('postseen/{id}', 'BlogAjaxController@updateSeen');
@@ -32,6 +35,10 @@ Route::put('commentseen/{id}', 'CommentAjaxController@updateSeen');
 
 // Contact
 Route::resource('contact', 'ContactController', ['except' => ['show', 'edit']]);
+
+// Card
+Route::resource('card', 'CardRegistrationController', ['except' => ['show', 'edit']]);
+
 
 // Roles
 Route::get('roles', 'RoleController@edit');
