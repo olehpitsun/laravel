@@ -9,7 +9,7 @@
 namespace App;
 use Illuminate\Database\Eloquent\Model;
 
-class Blog extends Model
+class CardRel extends Model
 {
-    protected $table = 'cardowners';
+    protected $table = 'cards';
 }

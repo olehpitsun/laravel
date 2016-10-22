@@ -38,11 +38,23 @@ Route::resource('contact', 'ContactController', ['except' => ['show', 'edit']]);
 
 // Card
 Route::resource('card', 'CardRegistrationController', ['except' => ['show', 'edit']]);
-
+//CardManager
+Route::resource('cardmanager', 'CardManagerController', ['except' => ['show', 'edit']]);
 
 // Roles
 Route::get('roles', 'RoleController@edit');
 Route::post('roles', 'RoleController@update');
+
+//Post
+
+Route::resource('post', 'PostController', ['except' => ['show', 'edit']]);
+Route::resource('blog', 'Bl', ['except' => ['show', 'edit']]);
+Route::get('blog/{blog}', 'Bl@show')->name('blog.show');
+
+
+//cardrel
+Route::resource('cardrel', 'CardRel', ['except' => ['show', 'edit']]);
+Route::get('cardrel/{cardrel}', 'CardRel@index')->name('cardrel.index');
 
 // Users
 Route::get('user/sort/{role?}', 'UserController@index');

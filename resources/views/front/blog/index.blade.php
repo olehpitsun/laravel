@@ -19,7 +19,7 @@
                 <div class="col-lg-12 text-center">
                     <h2>{{ $post->title }}
                     <br>
-                    <small>{!! $post->user->username . ' ' . trans('front/blog.on') . ' ' . strstr($post->created_at, ' ', true) . ($post->created_at != $post->updated_at ? trans('front/blog.updated') . strstr($post->updated_at, ' ', true) : '') !!}</small>
+                    <small>{!! $post->user->id . ' ' . trans('front/blog.on') . ' ' . strstr($post->created_at, ' ', true) . ($post->created_at != $post->updated_at ? trans('front/blog.updated') . strstr($post->updated_at, ' ', true) : '') !!}</small>
                     </h2>
                 </div>
                 <div class="col-lg-12">

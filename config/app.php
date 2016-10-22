@@ -130,7 +130,7 @@ return [
    
     'nbrPages' => [
         'front' => [
-            'posts' => 2,
+            'posts' => 5,
         ],
         'back' => [
             'posts' => 5,
