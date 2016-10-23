@@ -86,7 +86,7 @@ class LoginController extends Controller
                 $request->session()->forget('user_id');
             }
 
-            return redirect('/');
+            return redirect('/blog');
         }
         
         $request->session()->put('user_id', $user->id);

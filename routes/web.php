@@ -38,6 +38,11 @@ Route::resource('contact', 'ContactController', ['except' => ['show', 'edit']]);
 
 // Card
 Route::resource('card', 'CardRegistrationController', ['except' => ['show', 'edit']]);
+
+//Service
+Route::resource('service', 'ServiceController', ['except' => ['show', 'edit']]);
+Route::get('service/{id}', 'ServiceController@show')->name('service.show');
+
 //CardManager
 Route::resource('cardmanager', 'CardManagerController', ['except' => ['show', 'edit']]);
 

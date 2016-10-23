@@ -1,4 +1,5 @@
 @extends('front.template')
+{!! HTML::style('loginform.css')!!}
 
 @section('main')
     <div class="login-page">

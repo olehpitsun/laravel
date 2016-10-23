@@ -1,8 +1,10 @@
 {{Session::get('message') }}
+
 @extends('front.template')
-</br>
+
+</br></br>
 <div class="row">
-        <div class="col-lg-6 col-lg-offset-1 col-md-6 col-md-offset-1 col-xs-12">
+        <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-xs-12">
         <ul class="breadcrumb">
                 <li><a href="/">Головна</a></li>
                 <li><a href="/blog">Мої картки</a></li>
@@ -16,14 +18,18 @@
 
         @section('main')
                 <p><h1 align="center">Інші картки</h1></p>
-                <div class="login-page">
-                        <div class="list-group">
+
                         @foreach($blogs as $data)
-                                        <a href="#" class="list-group-item">
-                                                {{ $data->recepientID }}
+                                        <a href="/cardrel/{{ $data->recepientID }}">
+                                                <div class="panel panel-default">
+                                                        <div class="panel-heading">{{ $data->recepientID }}</div>
+                                                        <div class="panel-body">
+                                                                {{ $data->created_at }}
+                                                        </div>
+                                                </div>
+
 
                                 </a>
                         @endforeach
-                                </div>
-                </div>
+
         @endsection
